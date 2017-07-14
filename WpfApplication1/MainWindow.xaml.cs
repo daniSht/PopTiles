@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace WpfApplication1
 {
@@ -377,6 +372,7 @@ namespace WpfApplication1
                     button.SetValue(Grid.ColumnProperty, i);
                     button.SetValue(Grid.RowProperty, j);
                     ButtonCoords.setCoords(button, i, j);
+                    button.Style = (Style)FindResource("NoHoverButton");
                     button.Click += ClickButton;
                     MainGrid.Children.Add(button);
                 }

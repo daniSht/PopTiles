@@ -15,15 +15,28 @@ namespace PopTilesWpf
     {
         const int MaxX = 12;
         const int MaxY = 10;
-        private SolidColorBrush[] colorsArr = new SolidColorBrush[] { Brushes.Salmon, (SolidColorBrush)(new BrushConverter().ConvertFrom("#b636e3")), Brushes.Gold, Brushes.MediumSpringGreen, Brushes.SlateGray }; //(Color)ColorConverter.ConvertFromString("#faffff");
+        private List<SolidColorBrush> colorsArr = new List<SolidColorBrush>() { Brushes.Salmon, (SolidColorBrush)(new BrushConverter().ConvertFrom("#b636e3")), Brushes.Gold, Brushes.MediumSpringGreen, Brushes.SlateGray }; //(Color)ColorConverter.ConvertFromString("#faffff");
         private PopField PopFieldInstance { get; set; }
         private Score ScoreInstance { get; set; }
 
+        public class WowLevelItem
+        {
+            public int LowerBoundary { get; set; }
+            public string Message { get; set; }
+        }
+
         private class Score
-        {            
+        {
+            
             const int Mul = 5;
-            private int[] targetScores = new int[] { 1000, 3000, 5000, 7500, 10000, 13000, 16000, 19000, 22000, 25000, 29000, 33000, 37000, 41000, 45000, 50000, 55000, 60000, 65000, 70000 };
-            private int[] bonus = new int[] { 2000, 1920, 1820, 1680, 1500, 1280, 1020, 720, 380};
+            private List<int> targetScores = new List<int>() { 1000, 3000, 5000, 7500, 10000, 13000, 16000, 19000, 22000, 25000, 29000, 33000, 37000, 41000, 45000, 50000, 55000, 60000, 65000, 70000 };
+            private List<int> bonus = new List<int>() { 2000, 1920, 1820, 1680, 1500, 1280, 1020, 720, 380};
+            private List<WowLevelItem> wowLevelBoundaries = new List<WowLevelItem>()
+            {
+                new WowLevelItem {LowerBoundary = 8, Message = "Good" },
+                new WowLevelItem {LowerBoundary = 12, Message = "Nice" },
+                new WowLevelItem {LowerBoundary = 16, Message = "Perfect" }
+            };
             public int Level { get; set; }
             public int CurrentScore { get; set; }
             public int TargetScore { get; set; }
@@ -47,6 +60,13 @@ namespace PopTilesWpf
             {
                 this.CurrentScore += this.GetNewScore(n);
             }
+
+            public WowLevelItem GetWowLevel(int n)
+            {
+                var filteredWowLevels = wowLevelBoundaries.Where(i2 => i2.LowerBoundary <= n);
+                return filteredWowLevels.Count() == 0 ? null : wowLevelBoundaries.FirstOrDefault(i1 => i1.LowerBoundary == filteredWowLevels.Max(i2 => i2.LowerBoundary));
+            }
+
             public bool IsGameOver()
             {
                 return CurrentScore < TargetScore;
@@ -398,7 +418,7 @@ namespace PopTilesWpf
         {
             InitializeComponent();
             this.GenerateButtons();
-            this.StartNewGame();
+            this.StartNewGame();            
         }
 
         public void ClickButton(object sender, RoutedEventArgs e)
@@ -408,7 +428,21 @@ namespace PopTilesWpf
             LblScoreToReceive.Content = null;
             if(this.PopFieldInstance.IsGroupSelected(coords))
             {
-                this.ScoreInstance.SetNewScore(this.PopFieldInstance.GetTotalSelecetedItems());
+                int n = this.PopFieldInstance.GetTotalSelecetedItems();
+                this.ScoreInstance.SetNewScore(n);
+                WowLevelItem wowLevelItem = this.ScoreInstance.GetWowLevel(n);
+                if (wowLevelItem != null)
+                {
+                    var splashWin = new Window1()
+                    {
+                        Top = (this.Height - 100) / 2 + this.Top,
+                        Left = (this.Width - 200) / 2 + this.Left
+                    };
+                    splashWin.SplashWinLabel.Content = wowLevelItem.Message;
+                    splashWin.Show();
+                    Task.Delay(TimeSpan.FromSeconds(1))
+                        .ContinueWith((t) => splashWin.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+                }
                 this.PopFieldInstance.DestroySelected();                
                 if (this.PopFieldInstance.IsLevelEnded())
                 {

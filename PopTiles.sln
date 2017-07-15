@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf", "Wpf", "{D1A34E0C-B8E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopTilesWpf", "Wpf\PopTilesWpf.csproj", "{1E496A44-1D50-4B9B-902E-FC30D23AF264}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{D15F0C80-63CA-47E8-92B1-8060BD2F0BD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopTilesLogic", "PopTilesLogic\PopTilesLogic.csproj", "{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +21,16 @@ Global
 		{1E496A44-1D50-4B9B-902E-FC30D23AF264}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E496A44-1D50-4B9B-902E-FC30D23AF264}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E496A44-1D50-4B9B-902E-FC30D23AF264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1E496A44-1D50-4B9B-902E-FC30D23AF264} = {D1A34E0C-B8E8-4294-9714-1089B5E9E89F}
+		{8AAB5CF3-662C-4E4C-9AEF-0992AEAA44C9} = {D15F0C80-63CA-47E8-92B1-8060BD2F0BD6}
 	EndGlobalSection
 EndGlobal

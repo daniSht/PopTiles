@@ -43,15 +43,15 @@ namespace WpfApplication1
             {
                 return n * n * Mul;
             }
-            public void setNewScore(int n)
+            public void SetNewScore(int n)
             {
                 this.CurrentScore += this.GetNewScore(n);
             }
-            public bool isGameOver()
+            public bool IsGameOver()
             {
                 return CurrentScore < TargetScore;
             }
-            public bool setNextLevel()
+            public bool SetNextLevel()
             {
                 if (targetScores.Count() <= Level + 1)
                 {
@@ -61,7 +61,7 @@ namespace WpfApplication1
                 TargetScore = targetScores[Level];
                 return true;
             }
-            public void setReceivedBonus(int remainingItems)
+            public void SetReceivedBonus(int remainingItems)
             {
                 int currentBonus = 0;
                 if(remainingItems < this.bonus.Count()) 
@@ -98,7 +98,7 @@ namespace WpfApplication1
                 this.Y = tagInt / 100;
             }
 
-            public static void setCoords(Button button, int x, int y)
+            public static void SetCoords(Button button, int x, int y)
             {
                 button.Tag = y * 100 + x;
             }
@@ -159,15 +159,15 @@ namespace WpfApplication1
                     }
                 }
             }
-            public PopItem getPopItem(int x, int y)
+            public PopItem GetPopItem(int x, int y)
             {
                 return FieldArray[x, y];
             }
-            public PopItem getPopItem(ButtonCoords coords)
+            public PopItem GetPopItem(ButtonCoords coords)
             {
                 return FieldArray[coords.X, coords.Y];
             }
-            private bool getAdjacentItems(ButtonCoords coords, bool isTestMode = false)
+            private bool GetAdjacentItems(ButtonCoords coords, bool isTestMode = false)
             {
                 int x = coords.X;
                 int y = coords.Y;
@@ -184,7 +184,7 @@ namespace WpfApplication1
                     var tempCoord = new ButtonCoords(x1, y);
                     FieldArray[x1, y].IsSelected = true;
                     LstSelectedItems.Add(tempCoord);
-                    this.getAdjacentItems(tempCoord);
+                    this.GetAdjacentItems(tempCoord);
                 }
                 if (x2 < MaxX && FieldArray[x2, y].IsVisible == true && FieldArray[x2, y].IsSelected != true && FieldArray[x2, y].Color == FieldArray[x, y].Color)
                 {
@@ -195,7 +195,7 @@ namespace WpfApplication1
                     var tempCoord = new ButtonCoords(x2, y);
                     FieldArray[x2, y].IsSelected = true;
                     LstSelectedItems.Add(tempCoord);
-                    this.getAdjacentItems(tempCoord);
+                    this.GetAdjacentItems(tempCoord);
                 }
                 if (y1 >= 0 && FieldArray[x, y1].IsVisible == true && FieldArray[x, y1].IsSelected != true && FieldArray[x, y1].Color == FieldArray[x, y].Color)
                 {
@@ -206,7 +206,7 @@ namespace WpfApplication1
                     var tempCoord = new ButtonCoords(x, y1);
                     FieldArray[x, y1].IsSelected = true;
                     LstSelectedItems.Add(tempCoord);
-                    this.getAdjacentItems(tempCoord);
+                    this.GetAdjacentItems(tempCoord);
                 }
                 if (y2 < MaxY && FieldArray[x, y2].IsVisible == true && FieldArray[x, y2].IsSelected != true && FieldArray[x, y2].Color == FieldArray[x, y].Color)
                 {
@@ -217,11 +217,11 @@ namespace WpfApplication1
                     var tempCoord = new ButtonCoords(x, y2);
                     FieldArray[x, y2].IsSelected = true;
                     LstSelectedItems.Add(tempCoord);
-                    this.getAdjacentItems(tempCoord);
+                    this.GetAdjacentItems(tempCoord);
                 }
                 return false;
             }
-            public void setSelectedGroup(ButtonCoords coords)
+            public void SetSelectedGroup(ButtonCoords coords)
             {
                 for (int i = 0; i < MaxX; ++i)
                 {
@@ -233,13 +233,13 @@ namespace WpfApplication1
                 FieldArray[coords.X, coords.Y].IsSelected = true;
                 LstSelectedItems.Clear();
                 LstSelectedItems.Add(coords);
-                this.getAdjacentItems(coords);
+                this.GetAdjacentItems(coords);
                 if (LstSelectedItems.Count == 1)
                 {
                     LstSelectedItems.Clear();
                 }
             }
-            private void popItemsFall()
+            private void PopItemsFall()
             {
                 var lstDistinctX = LstSelectedItems.Select(c => c.X).Distinct().ToList();
                 foreach (var x in lstDistinctX)
@@ -260,7 +260,7 @@ namespace WpfApplication1
                     }
                 }
             }
-            private void rowsToTheLeft()
+            private void RowsToTheLeft()
             {
                 var lstDistinctX = LstSelectedItems.Select(c => c.X).Distinct().ToList();
                 var lstEmptyX = new List<int>();
@@ -290,7 +290,7 @@ namespace WpfApplication1
                     }
                 }
             }
-            public bool isLevelEnded()
+            public bool IsLevelEnded()
             {
                 bool isThereAnyGroups = false;
                 for (int i = 0; i < MaxX; ++i)
@@ -299,7 +299,7 @@ namespace WpfApplication1
                     {
                         if (FieldArray[i, j].IsVisible)
                         {
-                            isThereAnyGroups = isThereAnyGroups || this.getAdjacentItems(new ButtonCoords(i, j), true);
+                            isThereAnyGroups = isThereAnyGroups || this.GetAdjacentItems(new ButtonCoords(i, j), true);
                             if (isThereAnyGroups)
                             {
                                 break;
@@ -313,28 +313,28 @@ namespace WpfApplication1
                 }
                 return !isThereAnyGroups;
             }
-            public void destroySelected()
+            public void DestroySelected()
             {
                 foreach (ButtonCoords coord in LstSelectedItems)
                 {
                     FieldArray[coord.X, coord.Y].IsVisible = false;
                 }
-                this.popItemsFall();
-                this.rowsToTheLeft();
+                this.PopItemsFall();
+                this.RowsToTheLeft();
 
                 LstSelectedItems.Clear();
             }
-            public int getVisibleItemsCount()
+            public int GetVisibleItemsCount()
             {
                 List<PopItem> lstFieldItems = this.FieldArray.Cast<PopItem>().ToList();
                 return lstFieldItems.Where(i => i.IsVisible == true).Count();
             }
-            public int getTotalSelecetedItems()
+            public int GetTotalSelecetedItems()
             {
                 return this.LstSelectedItems.Count();
             }
 
-            public bool isGroupSelected(ButtonCoords coords)
+            public bool IsGroupSelected(ButtonCoords coords)
             {
                 return this.LstSelectedItems.Contains(coords);
             }
@@ -345,7 +345,7 @@ namespace WpfApplication1
             foreach (Button button in MainGrid.Children.Cast<UIElement>().ToList())
             {
                 var coords = new ButtonCoords((Button)button);
-                var popItem = PopFieldInstance.getPopItem(coords);
+                var popItem = PopFieldInstance.GetPopItem(coords);
                 var isSelected = PopFieldInstance.LstSelectedItems.Contains(coords);
                 button.Visibility = popItem.IsVisible ? Visibility.Visible : Visibility.Hidden;
                 button.Background = colorsArr[popItem.Color];
@@ -371,7 +371,7 @@ namespace WpfApplication1
                     Button button = new Button();
                     button.SetValue(Grid.ColumnProperty, i);
                     button.SetValue(Grid.RowProperty, j);
-                    ButtonCoords.setCoords(button, i, j);
+                    ButtonCoords.SetCoords(button, i, j);
                     button.Style = (Style)FindResource("NoHoverButton");
                     button.Click += ClickButton;
                     MainGrid.Children.Add(button);
@@ -406,23 +406,23 @@ namespace WpfApplication1
             Button button = (Button)sender;
             var coords = new ButtonCoords(button);
             LblScoreToReceive.Content = null;
-            if(this.PopFieldInstance.isGroupSelected(coords))
+            if(this.PopFieldInstance.IsGroupSelected(coords))
             {
-                this.ScoreInstance.setNewScore(this.PopFieldInstance.getTotalSelecetedItems());
-                this.PopFieldInstance.destroySelected();                
-                if (this.PopFieldInstance.isLevelEnded())
+                this.ScoreInstance.SetNewScore(this.PopFieldInstance.GetTotalSelecetedItems());
+                this.PopFieldInstance.DestroySelected();                
+                if (this.PopFieldInstance.IsLevelEnded())
                 {
-                    this.ScoreInstance.setReceivedBonus(this.PopFieldInstance.getVisibleItemsCount());
+                    this.ScoreInstance.SetReceivedBonus(this.PopFieldInstance.GetVisibleItemsCount());
                     TxtBonus.Text = this.ScoreInstance.GetLastLevelBonus().ToString();
                     TxtTotalBonus.Text = this.ScoreInstance.GetTotalBonus().ToString();
-                    if (ScoreInstance.isGameOver())
+                    if (ScoreInstance.IsGameOver())
                     {
                         LblGameOver.Visibility = Visibility.Visible;
                         BtnStartNewGame.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        if (!ScoreInstance.setNextLevel())
+                        if (!ScoreInstance.SetNextLevel())
                         {
                             LblHighestScore.Visibility = Visibility.Visible;
                             BtnStartNewGame.Visibility = Visibility.Visible;
@@ -433,8 +433,8 @@ namespace WpfApplication1
             }
             else 
             {
-                this.PopFieldInstance.setSelectedGroup(coords);
-                var scoreToReceive = this.PopFieldInstance.getTotalSelecetedItems();
+                this.PopFieldInstance.SetSelectedGroup(coords);
+                var scoreToReceive = this.PopFieldInstance.GetTotalSelecetedItems();
                 if (scoreToReceive != 0)
                 {
                     LblScoreToReceive.Content = scoreToReceive.ToString() + " tiles reward score " + this.ScoreInstance.GetNewScore(scoreToReceive).ToString();

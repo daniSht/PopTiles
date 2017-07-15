@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 
-namespace WpfApplication1
+namespace PopTilesWpf
 {
 
     public partial class MainWindow : Window

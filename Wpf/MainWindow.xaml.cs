@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,9 +34,9 @@ namespace PopTilesWpf
             private List<int> bonus = new List<int>() { 2000, 1920, 1820, 1680, 1500, 1280, 1020, 720, 380};
             private List<WowLevelItem> wowLevelBoundaries = new List<WowLevelItem>()
             {
-                new WowLevelItem {LowerBoundary = 8, Message = "Good" },
-                new WowLevelItem {LowerBoundary = 12, Message = "Nice" },
-                new WowLevelItem {LowerBoundary = 16, Message = "Perfect" }
+                new WowLevelItem {LowerBoundary = 3, Message = "Good" },
+                new WowLevelItem {LowerBoundary = 4, Message = "Nice" },
+                new WowLevelItem {LowerBoundary = 5, Message = "Perfect" }
             };
             public int Level { get; set; }
             public int CurrentScore { get; set; }
@@ -442,6 +443,8 @@ namespace PopTilesWpf
                     splashWin.Show();
                     Task.Delay(TimeSpan.FromSeconds(1))
                         .ContinueWith((t) => splashWin.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+                    SoundPlayer player = new SoundPlayer(wowLevelItem.Message + ".wav");
+                    player.Play();
                 }
                 this.PopFieldInstance.DestroySelected();                
                 if (this.PopFieldInstance.IsLevelEnded())
